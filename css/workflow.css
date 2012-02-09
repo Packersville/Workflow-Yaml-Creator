@@ -6,6 +6,15 @@
   border: solid 1px black;
   margin-top: 20px;
 }
+.field_name{
+  float:left;
+}
+.field_type{
+  float:left;
+}
+.field_parent_module{
+  float:left;
+}
 .acceptable_value_list ul{
   list-style:none; 
   margin: 0 0 0 9px;

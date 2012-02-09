@@ -2,13 +2,13 @@ $(document).ready(function() {
   $('#add_field_button').click(function(){
     var $field_clone = $('.module_field:last').clone();
     $('div.module_field:last').after($field_clone);
-    $field_clone.find('div.delete_field_button').click(function(){
+    $field_clone.find('input[name*="delete"]').click(function(){
       if ($('.module_field').size() != 1)
 	$(this).closest('div.module_field').remove();
     });
   });
 
-  $('.delete_field_button').click(function(){
+  $('input[name*="delete"]').click(function(){
     if ($('.module_field').size() != 1)
       $(this).closest('div.module_field').remove();
   });
