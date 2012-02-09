@@ -1,7 +1,9 @@
+var $field_clone = 0
 $(document).ready(function() {
+  $field_clone = $('.cloneable_module_field').clone();
+  $field_clone = $field_clone.removeAttr("class").attr("class", "module_field");
   $('#add_field_button').click(function(){
-    var $field_clone = $('.module_field:last').clone();
-    $('div.module_field:last').after($field_clone);
+    $('div.module_field').after($field_clone);
     $field_clone.find('input[name*="delete"]').click(function(){
       if ($('.module_field').size() != 1)
 	$(this).closest('div.module_field').remove();
