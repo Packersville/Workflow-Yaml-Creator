@@ -37,3 +37,6 @@ hr{
 .cloneable_module_field{
   display:none;
 }
+.hiddenInput{
+  display:none;
+}

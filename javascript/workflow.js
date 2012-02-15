@@ -1,24 +1,39 @@
 $(document).ready(function() {
+  //Click event assigned to Add Field button and creates a delete button for that field
   $('#add_field_button').click(function(){
     $('div.module_field:last').after(field_clone);
-    field_clone.find('input[name*="delete"]').click(function(){
+    $('div.module_field:last').find('input[name*="delete"]').click(function(){
       if ($('.module_field').size() != 1)
 	$(this).closest('div.module_field').remove();
     });
   });
+  
+  //Add click event to initial delete button on the page
   $('input[name*="delete"]').click(function(){
     if ($('.module_field').size() != 1)
       $(this).closest('div.module_field').remove();
   });
   
+  //Add click event to initial field type select
+  $('.field_type_select').change(function(){
+    if ($('.field_type_select').next().attr('name') == 'field_type'){
+      $('.field_type_select').next().remove();
+      appendFieldTypeSelectionInsideInput($('.field_type_select'))
+    }
+    else{
+      appendFieldTypeSelectionInsideInput($('.field_type_select'));
+    }
+  });
+  
+  //Add value to acceptable values list and hidden field containing the value entered
   $('.field_acceptable_values > button').click(function(){
     var value = $(this).parent().find('input').val();
     if (value != ""){
       var li_count = $('.acceptable_value_list > ul > li').size()
       if (li_count != [])
-	$('.acceptable_value_list > ul > li:last').after("<li>"+value+"<input name='delete' type='image' src='images/icon_small_delete.gif'/></li>");
+	$('.acceptable_value_list > ul > li:last').after("<li>"+value+"<input class='hiddenInput' name='acceptable_value' type='text' value="+value+"/><input name='delete' type='image' src='images/icon_small_delete.gif'/></li>");
       else
-	$('.acceptable_value_list').append("<ul><li>"+value+"<input name='delete' type='image' src='images/icon_small_delete.gif'/></li></ul>");
+	$('.acceptable_value_list').append("<ul><li>"+value+"<input class='hiddenInput' name='acceptable_value' type='text' value="+value+"/><input name='delete' type='image' src='images/icon_small_delete.gif'/></li></ul>");
       $(this).parent().find('input').val("");
       $('input[name*="delete"]').click(function(){
 	$(this).parent().remove()
@@ -27,8 +42,33 @@ $(document).ready(function() {
   });
 });
 
+function formSubmit(){
+  var formData = form2js('testForm', '.', true,
+    function(node)
+    {
+      if (node.id && node.id.match(/callbackTest/))
+      {
+	return { name: node.id, value: node.innerHTML };
+      }
+    });
+  document.getElementById('testArea').innerHTML = JSON.stringify(formData, null, '\t');
+}
+
+//Appends a input after field_type_select that is hidden
+function appendFieldTypeSelectionInsideInput($class){
+  $class.after("<input class='hiddenInput' name='field_type' type='text' value="+$class.val()+"/>");
+}
+
+// $.ajax({
+//   url: "bob"
+//   typer: "POST",
+//   contentType: "application/json; charset=utf-8",
+//   data: json,
+//   dataType: "json"  
+// });
+
 var field_clone = '<div class="module_field">' +
-    '<div class="field_name">Field Name: <input type="text" name="field_name" /></div>' +
+    '<div class="field_name">Field Name: <input type="text" name="field_name2" /></div>' +
     '<div class="field_type">Type: ' +
       '<select>' +
 	'<option value="integer">Integer</option>' +
@@ -37,7 +77,7 @@ var field_clone = '<div class="module_field">' +
 	'<option value="date">Date</option>' +
       '</select>' +
     '</div>' +
-    '<div class="field_parent_module">Parent Module (if one): <input type="text" name="parent_module"/></div>' +
+    '<div class="field_parent_module"> Parent Module (if one): <input type="text" name="parent_module"/></div>' +
     '<div class="acceptable_value_container">' +
       '<div class="field_acceptable_values">Acceptable Values<input type="text" name="acceptable_value_text_field"/><button id="add_button" type="button">Add Value</button></div>' +
       '<div class="acceptable_value_list"></div>' +
