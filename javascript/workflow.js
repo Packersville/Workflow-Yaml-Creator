@@ -1,7 +1,7 @@
 $(document).ready(function() {
   //Click event assigned to Add Field button and creates a delete button for that field
   $('#add_field_button').click(function(){
-    $('div.module_field:last').after(field_clone);
+    $('div.module_field:last').after(createClone());
     $('div.module_field:last').find('input[name*="delete"]').click(function(){
       if ($('.module_field').size() != 1)
 	$(this).closest('div.module_field').remove();
@@ -56,8 +56,38 @@ function formSubmit(){
 
 //Appends a input after field_type_select that is hidden
 function appendFieldTypeSelectionInsideInput($class){
-  $class.after("<input class='hiddenInput' name='field_type' type='text' value="+$class.val()+"/>");
+  var newNumber = newNumber();
+  $class.after("<input class='hiddenInput' name='field_type-'"+newNumber+"'type='text' value="+$class.val()+"/>");
 }
+
+function newNumber(){
+  var number = (parseInt($('.field_name').last().find('input').attr('name').split('-')[1]) + 1);
+  return number;
+}
+
+function createClone(){
+  var newNumber = newNumber();
+  var field_clone = '<div class="module_field">' +
+    '<div class="field_name">Field Name: <input type="text" name="field_name-"'+newNumber+'"/></div>' +
+    '<div class="field_type">Type: ' +
+      '<select class="field_type_select">' +
+	'<option value="integer">Integer</option>' +
+	'<option value="string">String</option>' +
+	'<option value="datetime">Datetime</option>' +
+	'<option value="date">Date</option>' +
+      '</select>' +
+    '</div>' +
+    '<div class="field_parent_module"> Parent Module (if one): <input type="text" name="parent_module-"'+newNumber+'"/></div>' +
+    '<div class="acceptable_value_container">' +
+      '<div class="field_acceptable_values">Acceptable Values<input type="text" name="acceptable_value_text_field"/><button id="add_button" type="button">Add Value</button></div>' +
+      '<div class="acceptable_value_list"></div>' +
+    '</div>' +
+    '<div class="delete_field_button"><input type="image" name="delete_field" src="images/delete_circle.jpg"/></div>' +
+   ' <hr>' +
+  '</div>'
+}
+
+
 
 // $.ajax({
 //   url: "bob"
@@ -66,22 +96,3 @@ function appendFieldTypeSelectionInsideInput($class){
 //   data: json,
 //   dataType: "json"  
 // });
-
-var field_clone = '<div class="module_field">' +
-    '<div class="field_name">Field Name: <input type="text" name="field_name2" /></div>' +
-    '<div class="field_type">Type: ' +
-      '<select>' +
-	'<option value="integer">Integer</option>' +
-	'<option value="string">String</option>' +
-	'<option value="datetime">Datetime</option>' +
-	'<option value="date">Date</option>' +
-      '</select>' +
-    '</div>' +
-    '<div class="field_parent_module"> Parent Module (if one): <input type="text" name="parent_module"/></div>' +
-    '<div class="acceptable_value_container">' +
-      '<div class="field_acceptable_values">Acceptable Values<input type="text" name="acceptable_value_text_field"/><button id="add_button" type="button">Add Value</button></div>' +
-      '<div class="acceptable_value_list"></div>' +
-    '</div>' +
-    '<div class="delete_field_button"><input type="image" name="delete_field" src="images/delete_circle.jpg"/></div>' +
-   ' <hr>' +
-  '</div>'
