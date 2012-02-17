@@ -1,12 +1,8 @@
+var $module_clone = 0;
 $(document).ready(function() {
   //Click event assigned to Add Field button and creates a delete button for that field
   //Assigns multiple events to elements as well
-  $('#add_field_button').click(function(){
-    $('div.module_field:last').after(createClone());
-    createOnClickForDeleteButton()
-    createHiddenFieldOnFieldTypeChange($('.field_type_select:last'))
-    addOnClickEventToAddValueButton($('.field_acceptable_values:last > button'))
-  });
+  addOnClickEvenToAddFieldButton($('.add_field_button'))
   
   //Add click event to initial delete button on the page
   createOnClickForDeleteButton()
@@ -18,6 +14,11 @@ $(document).ready(function() {
   
   //Add value to acceptable values list and hidden field containing the value entered
   addOnClickEventToAddValueButton($('.field_acceptable_values > button'))
+  
+  //Add onclick event to Add Module button
+  addOnClickEventToAddModuleButton()
+  
+  $module_clone = $('.module').clone(true);
 });
 
 function formSubmit(){
@@ -31,6 +32,28 @@ function formSubmit(){
     });
   document.getElementById('testArea').innerHTML = JSON.stringify(formData, null, '\t');
 }
+
+function addOnClickEventToAddModuleButton(){
+  $('#add_module').click(function(){
+    //alterCloneAddFieldButtonId()
+    $('.module:last').after($module_clone);
+    addOnClickEvenToAddFieldButton($('.add_field_button:last'))
+    $module_clone = $('.module:last').clone(true);
+  });
+}
+
+function addOnClickEvenToAddFieldButton($button){
+  $button.click(function(){
+    $(this).parents('.module').find('div.module_field:last').after(createClone());
+    createOnClickForDeleteButton()
+    createHiddenFieldOnFieldTypeChange($(this).parents('.module').find('.field_type_select'))
+    addOnClickEventToAddValueButton($(this).parents('.module').find('.field_acceptable_values > button'))
+  });
+}
+
+// function alterCloneAddFieldButtonId(){
+//   module_clone = $module_clone.find('.add_field_button').removeAttr('id').attr('id', "add_field_button-"+$('.module').size());
+// }
 
 function addOnClickEventToAddValueButton($button){
   $button.click(function(){

@@ -40,3 +40,8 @@ hr{
 .hiddenInput{
   display:none;
 }
+hr.bold{
+  height:5px;
+  color:black;
+  background-color:black;
+}
