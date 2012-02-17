@@ -5,6 +5,7 @@ $(document).ready(function() {
     $('div.module_field:last').after(createClone());
     createOnClickForDeleteButton()
     createHiddenFieldOnFieldTypeChange($('.field_type_select:last'))
+    addOnClickEventToAddValueButton($('.field_acceptable_values:last > button'))
   });
   
   //Add click event to initial delete button on the page
@@ -16,20 +17,7 @@ $(document).ready(function() {
   addHiddenFieldForAcceptableValues()
   
   //Add value to acceptable values list and hidden field containing the value entered
-  $('.field_acceptable_values > button').click(function(){
-    var value = $(this).parent().find('input').val();
-    if (value != ""){
-      var li_count = $('.acceptable_value_list > ul > li').size()
-      if (li_count != [])
-	$('.acceptable_value_list > ul > li:last').after("<li>"+value+"<input name='delete' type='image' src='images/icon_small_delete.gif'/></li>");
-      else
-	$('.acceptable_value_list').append("<ul><li>"+value+"<input name='delete' type='image' src='images/icon_small_delete.gif'/></li></ul>");
-      $(this).parent().find('input').val("");
-      $('input[name*="delete"]').click(function(){
-	$(this).parent().remove()
-      });
-    }
-  });
+  addOnClickEventToAddValueButton($('.field_acceptable_values > button'))
 });
 
 function formSubmit(){
@@ -42,6 +30,23 @@ function formSubmit(){
       }
     });
   document.getElementById('testArea').innerHTML = JSON.stringify(formData, null, '\t');
+}
+
+function addOnClickEventToAddValueButton($button){
+  $button.click(function(){
+    var value = $(this).parent().find('input').val();
+    if (value != ""){
+      var li_count = $(this).parent().parent().find('.acceptable_value_list > ul > li').size()
+      if (li_count != [])
+	$(this).parent().parent().find('.acceptable_value_list > ul > li:last').after("<li>"+value+"<input name='delete' type='image' src='images/icon_small_delete.gif'/></li>");
+      else
+	$(this).parent().parent().find('.acceptable_value_list').append("<ul><li>"+value+"<input name='delete' type='image' src='images/icon_small_delete.gif'/></li></ul>");
+      $(this).parent().find('input').val("");
+      $('input[name*="delete"]').click(function(){
+	$(this).parent().remove()
+      });
+    }
+  });
 }
 
 function addHiddenFieldForAcceptableValues(){
