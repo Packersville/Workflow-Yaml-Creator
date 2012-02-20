@@ -35,25 +35,21 @@ function formSubmit(){
 
 function addOnClickEventToAddModuleButton(){
   $('#add_module').click(function(){
-    //alterCloneAddFieldButtonId()
     $('.module:last').after($module_clone);
-    addOnClickEvenToAddFieldButton($('.add_field_button:last'))
+    //addOnClickEvenToAddFieldButton($('.add_field_button:last'))
     $module_clone = $('.module:last').clone(true);
   });
 }
 
 function addOnClickEvenToAddFieldButton($button){
-  $button.click(function(){
+  $button.on("click",function(event){
+  //$button.click(function(){
     $(this).parents('.module').find('div.module_field:last').after(createClone());
     createOnClickForDeleteButton()
     createHiddenFieldOnFieldTypeChange($(this).parents('.module').find('.field_type_select'))
     addOnClickEventToAddValueButton($(this).parents('.module').find('.field_acceptable_values > button'))
   });
 }
-
-// function alterCloneAddFieldButtonId(){
-//   module_clone = $module_clone.find('.add_field_button').removeAttr('id').attr('id', "add_field_button-"+$('.module').size());
-// }
 
 function addOnClickEventToAddValueButton($button){
   $button.click(function(){
