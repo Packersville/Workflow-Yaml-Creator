@@ -32,12 +32,12 @@ function formSubmit(){
     });
   var data = JSON.stringify(formData, null, '\t');
   document.getElementById('testArea').innerHTML = data;
-  submitForm(data)
+  //submitForm(data)
 }
 
 function addOnClickEventToAddModuleButton(){
   $('#add_module').click(function(){
-    $('.module:last').after($module_clone);
+    $('.module:last').after($module_clone).hide().show('slow');
     incrementModuleNumberForInputName()
     $module_clone = $('.module:last').clone(true);
   });
@@ -59,7 +59,7 @@ function buildInputCurrentName(input){
 
 function addOnClickEvenToAddFieldButton($button){
   $button.on("click",function(event){
-    $(this).parents('.module').find('div.module_field:last').after(createClone($(this)));
+    $(this).parents('.module').find('div.module_field:last').after(createClone($(this))).hide().show('slow');
     createOnClickForDeleteButton()
     createHiddenFieldOnFieldTypeChange($(this).parents('.module').find('.field_type_select'))
     addOnClickEventToAddValueButton($(this).parents('.module').find('.field_acceptable_values > button'))
@@ -173,13 +173,13 @@ function newNumber($this){
   return number;
 }
 
-function submitForm(data){
-  $.ajax({
-    type:"POST",
-    dataType:"json",
-    data: data
-    error:function(xhr, textStatus, errorThrown){
-      alert("Error: " + textStatus);
-    }
-  });
-}
+// function submitForm(data){
+//   $.ajax({
+//     type:"POST",
+//     dataType:"json",
+//     data: data
+//     error:function(xhr, textStatus, errorThrown){
+//       alert("Error: " + textStatus);
+//     }
+//   });
+// }
