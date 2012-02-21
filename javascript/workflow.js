@@ -10,7 +10,7 @@ $(document).ready(function() {
   //Add click event to initial field type select (only to the initial, too)
   createHiddenFieldOnFieldTypeChange($('.field_type_select'))
   
-  addHiddenFieldForAcceptableValues()
+  onSubmitAddHiddenFieldForAcceptableValues()
   
   //Add value to acceptable values list and hidden field containing the value entered
   addOnClickEventToAddValueButton($('.field_acceptable_values > button'))
@@ -30,7 +30,9 @@ function formSubmit(){
 	return { name: node.id, value: node.innerHTML };
       }
     });
-  document.getElementById('testArea').innerHTML = JSON.stringify(formData, null, '\t');
+  var data = JSON.stringify(formData, null, '\t');
+  document.getElementById('testArea').innerHTML = data;
+  submitForm(data)
 }
 
 function addOnClickEventToAddModuleButton(){
@@ -81,7 +83,7 @@ function addOnClickEventToAddValueButton($button){
   });
 }
 
-function addHiddenFieldForAcceptableValues(){
+function onSubmitAddHiddenFieldForAcceptableValues(){
   $('#submit_button').click(function(){
     $('ul').each(function(){
       var moduleNumber = getModuleNumber($(this));
@@ -169,4 +171,15 @@ function getModuleNumber($this){
 function newNumber($this){
   var number = (parseInt($this.parents('.module').find('.field_name').last().find('input').attr('name').split('-')[2]) + 1);
   return number;
+}
+
+function submitForm(data){
+  $.ajax({
+    type:"POST",
+    dataType:"json",
+    data: data
+    error:function(xhr, textStatus, errorThrown){
+      alert("Error: " + textStatus);
+    }
+  });
 }
